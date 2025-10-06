@@ -30,8 +30,8 @@ function copyFile() {
 
   const entryStats = fs.statSync(entryFile);
 
-  if (entryStats.isDirectory()) {
-    console.error('Source is a directory');
+  if (!entryStats.isFile()) {
+    console.error('Source is not a regular file');
 
     return;
   }
@@ -39,8 +39,8 @@ function copyFile() {
   if (fs.existsSync(copyTo)) {
     const destStats = fs.statSync(copyTo);
 
-    if (destStats.isDirectory()) {
-      console.error('Destination is a directory');
+    if (!destStats.isFile()) {
+      console.error('Destination is not a regular file');
 
       return;
     }
