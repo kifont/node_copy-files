@@ -2,6 +2,7 @@
 'use strict';
 
 import fs from 'fs';
+import path from 'path';
 
 function copyFile() {
   if (process.argv.slice(2).length !== 2) {
@@ -18,7 +19,24 @@ function copyFile() {
     return;
   }
 
-  if (entryFile === copyTo) {
+  let realSource;
+  let realDest;
+
+  try {
+    realSource = fs.realpathSync(entryFile);
+  } catch {
+    console.error('Source file does not exist');
+
+    return;
+  }
+
+  try {
+    realDest = fs.realpathSync(copyTo);
+  } catch {
+    realDest = path.resolve(copyTo);
+  }
+
+  if (realSource === realDest) {
     return;
   }
 
